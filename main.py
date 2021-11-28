@@ -1,5 +1,5 @@
 from flask import Flask
-from apps.find_similar_hashtags import view as find_similar_hashtags_view
+from apps.find_similar_hashtags import views
 from apps.home import view as home_view
 
 app = Flask(
@@ -16,7 +16,12 @@ def home():
 
 @app.route("/hashtag-finder")
 def hashtag_finder():
-    return find_similar_hashtags_view()
+    return views.get_hashtag_relation_counts()
+
+
+@app.route("/hashtag-finder/<hashtag>")
+def similar_hashtags(hashtag):
+    return views.get_similar_hashtags(hashtag)
 
 
 if __name__ == "__main__":

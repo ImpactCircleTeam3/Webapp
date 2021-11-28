@@ -1,18 +1,20 @@
 {% extends "wrapper/base.html" %}
 {% block content %}
 
+<h1>Hashtag: {{hashtag}}</h1>
+
 <table class="table">
   <thead>
     <tr>
       <th>Hashtag</th>
-      <th>Count</th>
+      <th>Common Tweet Count</th>
     </tr>
   </thead>
   <tbody>
-    {% for hashtag in hashtag_relation_counts %}
+    {% for hashtag in similar_hashtags %}
     <tr>
-      <td><a href="/hashtag-finder/{{hashtag.hashtag}}">{{hashtag.hashtag}}</a></td>
-      <td>{{hashtag.relationship_count}}</td>
+      <td><a href="#">{{hashtag.hashtag}}</a></td>
+      <td>{{hashtag.score}}</td>
     </tr>
     {% endfor %}
   </tbody>
