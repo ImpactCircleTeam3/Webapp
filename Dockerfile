@@ -8,7 +8,9 @@ COPY ./app /app/
 RUN apk add --no-cache postgresql-libs \
     && apk add --no-cache --virtual .build-deps zlib-dev jpeg-dev gcc musl-dev postgresql-dev \
     && pip install --upgrade pip \
-    && pip install -r app/requirements.txt
+    && pip install -r app/requirements.txt \
+    && git submodule init \
+    && git submodule update
 
 ENV FLASK_APP '/app/main.py'
 
