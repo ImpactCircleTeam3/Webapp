@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED 1
 COPY ./app /app/
 
 RUN apk add --no-cache postgresql-libs \
-    && apk add --no-cache --virtual .build-deps zlib-dev jpeg-dev gcc musl-dev postgresql-dev \
+    && apk add --no-cache --virtual .build-deps zlib-dev jpeg-dev gcc musl-dev postgresql-dev git \
     && pip install --upgrade pip \
     && pip install -r app/requirements.txt \
     && git submodule init \
