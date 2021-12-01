@@ -60,17 +60,19 @@ class _Neo4JHandler:
 def get_hashtag_relation_counts():
     neo4j_ = Neo4J.get_instance().Neo4J
     hashtag_relation_counts = neo4j_.exec(_Neo4JHandler.get_hashtags_by_count)
+    max_index = len(hashtag_relation_counts) if len(hashtag_relation_counts) < 20 else 20
     return render_template(
         "find_similar_hashtags/index.html",
-        hashtag_relation_counts=hashtag_relation_counts
+        hashtag_relation_counts=hashtag_relation_counts[:max_index]
     )
 
 
 def get_similar_hashtags(hashtag: str):
     neo4j_ = Neo4J.get_instance().Neo4J
     similar_hashtags = neo4j_.exec(_Neo4JHandler.get_similar_hashtags, hashtag=hashtag)
+    max_index = len(similar_hashtags) if len(similar_hashtags) < 10 else 10
     return render_template(
         "find_similar_hashtags/detail.html",
-        similar_hashtags=similar_hashtags,
+        similar_hashtags=similar_hashtags[:max_index],
         hashtag=hashtag
     )

@@ -1,0 +1,42 @@
+{% extends "wrapper/base.html" %}
+{% block content %}
+
+<div class="container is-max-desktop">
+  <div class="notification is-primary">
+    <form method="post" action="/jobs/create">
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input class="input is-fullwidth" type="text" placeholder="#Hashtag" name="q">
+        </div>
+        <div class="control">
+          <button class="button is-primary" type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="container is-max-desktop mt-4">
+  <table class="table is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <th><abbr>Hashtag</abbr></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for job in jobs %}
+      <tr>
+        <th>#{{ job.q }}</th>
+        <td>
+          <form method="post" action="/jobs/delete">
+            <button class="button is-danger is-small" name="q" value="{{job.q}}">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
