@@ -1,23 +1,87 @@
 {% extends "wrapper/base.html" %}
 {% block content %}
 
-<h1>Hashtag: {{hashtag}}</h1>
+<div class="container">
+  <h1 class="title">#{{hashtag}}</h1>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Hashtag</th>
-      <th>Common Tweet Count</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for hashtag in similar_hashtags %}
-    <tr>
-      <td><a href="#">{{hashtag.hashtag}}</a></td>
-      <td>{{hashtag.score}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <div class="columns">
+    <div class="column">
+      <div class="card">
+        <div class="card-content">
+          <p class="title">
+            Number of tweets: 100
+          </p>
+        </div>
+      </div>
+    </div>
 
+    <div class="column">
+      <div class="card">
+        <div class="card-content">
+          <p class="title">
+            Number of authors: 100
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="card">
+        <div class="card-content">
+          <p class="title">
+            Related Hashtags: 100
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h1 class="title">Related Tweets</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Hashtag</th>
+        <th>Common Tweets</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for hashtag in similar_hashtags %}
+      <tr>
+        <td><a href="/hashtag-finder/{{hashtag.hashtag}}">{{hashtag.hashtag}}</a></td>
+        <td>{{hashtag.score}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h1 class="title">Top 20 BiGrams</h1>
+  {% if bigrams|length > 0 %}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Sequence</th>
+        <th>Frequency</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bigram in bigrams %}
+      <tr>
+        <td><a href="#">{{ bigram.sequence|join(', ') }}</a></td>
+        <td>{{bigram.frequency}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+
+  <p>No Bigrams found. Possible reasons: not enough tweets or creating ngrams is currently in progress</p>
+
+  {% endif %}
+
+</div>
 {% endblock %}
