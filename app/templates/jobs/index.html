@@ -37,6 +37,26 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <hr>
+
+  <div class="columns">
+    <div class="column">Users</div>
+    <div class="column">{{neo4j_stats['twitter_user']['neo4j']}}</div>
+    <div class="column">{{neo4j_stats['twitter_user']['pg']}}</div>
+  </div>
+
+  <div class="columns">
+    <div class="column">Hashtags</div>
+    <div class="column">{{neo4j_stats['hashtag']['neo4j']}}</div>
+    <div class="column">{{neo4j_stats['hashtag']['pg']}}</div>
+  </div>
+
+  <div class="columns">
+    <div class="column">Hashtags</div>
+    <div class="column">{{neo4j_stats['tweet']['neo4j']}}</div>
+    <div class="column">{{neo4j_stats['tweet']['pg']}}</div>
+  </div>
 </div>
 
 {% endblock %}

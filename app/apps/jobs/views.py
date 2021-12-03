@@ -33,10 +33,39 @@ class ORM:
         sql = "DELETE FROM job WHERE q=%s"
         cls.db.cur.execute(sql, (hashtag, ))
 
+    @classmethod
+    def get_neo4j_job_cache(cls):
+        sql = "SELECT value FROM postgres_to_neo_cache WHERE key=%s"
+
+        sql_hashtag_count = "SELECT MAX(id) FROM hashtag"
+        cls.db.cur.execute(sql_hashtag_count)
+        hashtag_count = cls.db.cur.fetchone()[0]
+        cls.db.cur.execute(sql, ("last_taken_hashtag_id",))
+        cached_hashtag = cls.db.cur.fetchone()[0]
+
+        sql_user_count = "SELECT MAX(id) FROM twitter_user"
+        cls.db.cur.execute(sql_user_count)
+        user_count = cls.db.cur.fetchone()[0]
+        cls.db.cur.execute(sql, ("last_taken_twitter_user_id",))
+        cached_user = cls.db.cur.fetchone()[0]
+
+        sql_tweet_count = "SELECT MAX(id) FROM tweet"
+        cls.db.cur.execute(sql_tweet_count)
+        tweet_count = cls.db.cur.fetchone()[0]
+        cls.db.cur.execute(sql, ("last_taken_id",))
+        cached_tweet = cls.db.cur.fetchone()[0]
+
+        return {
+            "twitter_user": {"neo4j": cached_user, "pg": user_count},
+            "hashtag": {"neo4j": cached_hashtag, "pg": hashtag_count},
+            "tweet": {"neo4j": cached_tweet, "pg": tweet_count},
+        }
+
 
 def index():
     jobs = ORM.get_jobs()
-    return render_template("jobs/index.html", jobs=jobs)
+    neo4j_stats = ORM.get_neo4j_job_cache()
+    return render_template("jobs/index.html", jobs=jobs, neo4j_stats=neo4j_stats)
 
 
 def create():
