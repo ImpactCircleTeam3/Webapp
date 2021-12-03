@@ -141,6 +141,8 @@ def get_similar_hashtags(hashtag: str):
     max_index = len(similar_hashtags) if len(similar_hashtags) < 10 else 10
     bigrams = ORM.get_ngrams(hashtag=hashtag, dimension=2)
     bigram_max_index = len(bigrams) if len(bigrams) < 20 else 20
+    trigrams = ORM.get_ngrams(hashtag=hashtag, dimension=3)
+    trigrams_max_index = len(bigrams) if len(bigrams) < 20 else 20
     related_tweet_count = neo4j_.exec(_Neo4JHandler.get_tweet_count_for_hashtag, hashtag=hashtag)
     related_author_count = neo4j_.exec(_Neo4JHandler.get_author_count_for_hashtag, hashtag=hashtag)
     related_hashtag_count = neo4j_.exec(_Neo4JHandler.get_hashtag_count_for_hashtag, hashtag=hashtag)
@@ -149,6 +151,7 @@ def get_similar_hashtags(hashtag: str):
         similar_hashtags=similar_hashtags[:max_index],
         hashtag=hashtag,
         bigrams=bigrams[:bigram_max_index],
+        trigrams=trigrams[:trigrams_max_index],
         related_tweet_count=related_tweet_count,
         related_author_count=related_author_count,
         related_hashtag_count=related_hashtag_count
