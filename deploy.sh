@@ -1,5 +1,6 @@
-docker-compose down
+docker stop flask_application
 
-git pull origin master
+# Made from CD Pipeline
+# git pull origin master
 
 docker-compose up --build -d flask

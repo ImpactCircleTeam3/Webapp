@@ -66,6 +66,54 @@ class _Neo4JHandler:
             for row in result
         ]
 
+    @classmethod
+    def get_tweet_count_for_hashtag(cls, tx: Transaction, hashtag: str) -> int:
+        query = """
+            MATCH (h:Hashtag)-[:IS_IN]->(t:Tweet)
+            WHERE h.hashtag=$hashtag
+            RETURN COUNT(DISTINCT t) as tweet_count
+        """
+        result = list(tx.run(query, hashtag=hashtag))
+        if len(result) == 0:
+            return 0
+
+        try:
+            return list(result)[0]['tweet_count']
+        except KeyError:
+            return 0
+
+    @classmethod
+    def get_author_count_for_hashtag(cls, tx: Transaction, hashtag: str) -> int:
+        query = """
+            MATCH (h:Hashtag)-[:IS_IN]->(t:Tweet)-[:IS_WRITTEN_BY]->(a:User)
+            WHERE h.hashtag=$hashtag
+            RETURN COUNT(DISTINCT a) as user_count
+        """
+        result = list(tx.run(query, hashtag=hashtag))
+        if len(result) == 0:
+            return 0
+
+        try:
+            return list(result)[0]['user_count']
+        except KeyError:
+            return 0
+
+    @classmethod
+    def get_hashtag_count_for_hashtag(cls, tx: Transaction, hashtag: str) -> int:
+        query = """
+            MATCH (h0:Hashtag)-[:IS_IN]->(t:Tweet)<-[:IS_IN]-(h:Hashtag)
+            WHERE h0.hashtag=$hashtag
+            RETURN COUNT(DISTINCT h) as hashtag_count
+        """
+        result = list(tx.run(query, hashtag=hashtag))
+        if len(result) == 0:
+            return 0
+
+        try:
+            return list(result)[0]['hashtag_count']
+        except KeyError:
+            return 0
+
 
 class ORM:
     db: Postgres = Postgres.get_instance().Postgres
@@ -93,9 +141,15 @@ def get_similar_hashtags(hashtag: str):
     max_index = len(similar_hashtags) if len(similar_hashtags) < 10 else 10
     bigrams = ORM.get_ngrams(hashtag=hashtag, dimension=2)
     bigram_max_index = len(bigrams) if len(bigrams) < 20 else 20
+    related_tweet_count = neo4j_.exec(_Neo4JHandler.get_tweet_count_for_hashtag, hashtag=hashtag)
+    related_author_count = neo4j_.exec(_Neo4JHandler.get_author_count_for_hashtag, hashtag=hashtag)
+    related_hashtag_count = neo4j_.exec(_Neo4JHandler.get_hashtag_count_for_hashtag, hashtag=hashtag)
     return render_template(
         "find_similar_hashtags/detail.html",
         similar_hashtags=similar_hashtags[:max_index],
         hashtag=hashtag,
-        bigrams=bigrams[:bigram_max_index]
+        bigrams=bigrams[:bigram_max_index],
+        related_tweet_count=related_tweet_count,
+        related_author_count=related_author_count,
+        related_hashtag_count=related_hashtag_count
     )
