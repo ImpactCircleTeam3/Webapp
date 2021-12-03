@@ -1,0 +1,18 @@
+{% extends "wrapper/base.html" %}
+{% block content %}
+
+Tweet Finder
+
+{% for tweet in tweets %}
+
+<div class="card mt-2">
+  <div class="card-content">
+    <div class="content">
+      {{tweet.text}}
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+
+{% endblock %}

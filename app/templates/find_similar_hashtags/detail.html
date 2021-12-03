@@ -70,7 +70,7 @@
     <tbody>
       {% for bigram in bigrams %}
       <tr>
-        <td><a href="#">{{ bigram.sequence|join(', ') }}</a></td>
+        <td><a href="/inserted-tweets?&q={{hashtag}}&q={{ bigram.sequence|join('&q=') }}">{{ bigram.sequence|join(', ') }}</a></td>
         <td>{{bigram.frequency}}</td>
       </tr>
       {% endfor %}

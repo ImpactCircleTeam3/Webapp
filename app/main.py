@@ -2,6 +2,7 @@ from flask import Flask
 from apps.find_similar_hashtags import views as similar_hashtag_views
 from apps.home import view as home_view
 from apps.jobs import views as job_views
+from apps.tweet_finder import views as tweet_finder_views
 
 
 app = Flask(
@@ -39,6 +40,11 @@ def create_jobs():
 @app.route('/jobs/delete', methods=['POST'])
 def delete_jobs():
     return job_views.delete()
+
+
+@app.route('/inserted-tweets')
+def get_tweets_by_keywords():
+    return tweet_finder_views.get_tweets_by_keywords()
 
 
 if __name__ == "__main__":

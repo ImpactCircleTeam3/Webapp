@@ -2,3 +2,4 @@ psycopg2-binary==2.9.2
 python-dotenv==0.19.2
 neo4j==4.4.0
 Flask==2.0.2
+elasticsearch==7.15.2

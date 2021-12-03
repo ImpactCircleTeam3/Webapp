@@ -22,3 +22,9 @@ class Settings:
             "port": int(os.getenv("DB_PORT")),
             "database": os.getenv("DB_NAME")
         }
+
+    @staticmethod
+    def get_es_uri() -> str:
+        pw = os.getenv("ELASTICSEARCH_PASSWORD")
+        path = os.getenv("ELASTICSEARCH_PATH")
+        return f"https://elastic:{pw}@{path}"
