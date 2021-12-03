@@ -12,5 +12,9 @@
 <body>
   {% block content %}
   {% endblock %}
+
+  <script src="{{ url_for('static',filename='d3/src/index.js') }}"></script>
+  {% block javascript %}
+  {% endblock %}
 </body>
 </html>
