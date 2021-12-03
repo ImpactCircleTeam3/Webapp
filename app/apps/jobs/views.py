@@ -44,7 +44,7 @@ def create():
         if request.form["q"] == "":
             raise Exception("q can not be empty")
         q = request.form["q"].replace("#", "").replace(" ", "").lower()
-        ORM.insert_job(Job(q=q, execution_intervall=360))
+        ORM.insert_job(Job(q=q, execution_intervall=30))
     except Exception as e:
         pass
     return redirect("/jobs")
