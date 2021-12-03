@@ -24,8 +24,8 @@ class NGram:
     dimension: int
     sequence: List[str]
     frequency: int
-    hashtag: str
-    hashtag_is_in_ngram: bool
+    q: str
+    type: str
 
 
 class _Neo4JHandler:
@@ -72,7 +72,7 @@ class ORM:
 
     @classmethod
     def get_ngrams(cls, hashtag: str, dimension: int):
-        sql = f"SELECT {','.join(NGram.__annotations__.keys())} FROM ngram WHERE hashtag=%s AND dimension=%s ORDER BY frequency DESC"
+        sql = f"SELECT {','.join(NGram.__annotations__.keys())} FROM ngram WHERE q=%s AND dimension=%s ORDER BY frequency DESC"
         cls.db.cur.execute(sql, (hashtag, dimension, ))
         return [NGram(*row) for row in cls.db.cur.fetchall()]
 
