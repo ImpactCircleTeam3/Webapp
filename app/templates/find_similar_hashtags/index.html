@@ -26,6 +26,25 @@
   </div>
   <div class="column">
     {% include 'find_similar_hashtags/bubble.html' %}
+    <hr/>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Bubble</th>
+          <th>Hashtags</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bubble in bubbles %}
+        <tr>
+          <td><a href="/bubble-detail/{{bubble.id}}">{{bubble.id}}</a></td>
+          <td>{{bubble.hashtags}}</td>
+          <td></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 

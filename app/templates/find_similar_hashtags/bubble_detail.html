@@ -1,0 +1,95 @@
+{% extends "wrapper/base.html" %}
+{% block content %}
+
+<div class="container">
+  <h1 class="title">#{{bubble.id}}</h1>
+  <h2 class="subtitle">#{{bubble.hashtags}}</h2>
+
+  <div class="columns">
+    <div class="column">
+      <div class="notification is-primary">
+        <p class="title">
+          Number of tweets: 100
+        </p>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="notification is-primary">
+        <p class="title">
+          Number of authors: 100
+        </p>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="notification is-primary">
+        <p class="title">
+          Related Hashtags: 100
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h1 class="title">Tweetbubble (TODO)</h1>
+
+  <h1 class="title">Direct Trigrams</h1>
+  {% if direct_ngrams|length > 0 %}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Sequence</th>
+        <th>Frequency</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bigram in direct_ngrams %}
+      <tr>
+        <td><a href="/inserted-tweets?&q={{hashtag}}&q={{ bigram.sequence|join('&q=') }}">{{ bigram.sequence|join(', ') }}</a></td>
+        <td>{{bigram.frequency}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+
+  <p>No Trigrams found. Possible reasons: not enough tweets or creating ngrams is currently in progress</p>
+
+  {% endif %}
+
+
+  <h1 class="title">All Trigrams</h1>
+  {% if related_ngrams|length > 0 %}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Sequence</th>
+        <th>Frequency</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for trigram in related_ngrams %}
+      <tr>
+        <td><a href="/inserted-tweets?&q={{hashtag}}&q={{ trigram.sequence|join('&q=') }}">{{ trigram.sequence|join(', ') }}</a></td>
+        <td>{{trigram.frequency}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+
+  <p>No Trigrams found. Possible reasons: not enough tweets or creating ngrams is currently in progress</p>
+
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

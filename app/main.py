@@ -28,6 +28,11 @@ def similar_hashtags(hashtag):
     return similar_hashtag_views.get_similar_hashtags(hashtag)
 
 
+@app.route("/bubble-detail/<bubble>")
+def bubble_detail(bubble):
+    return similar_hashtag_views.get_bubble_detail(bubble)
+
+
 @app.route("/jobs")
 def jobs():
     return job_views.index()

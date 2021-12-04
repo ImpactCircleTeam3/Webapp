@@ -9,7 +9,7 @@ class ORM:
 
     @classmethod
     def get_ngrams(cls, hashtag: str, dimension: int) -> List[NGram]:
-        sql = f"SELECT {','.join(NGram.__annotations__.keys())} FROM ngram WHERE q=%s AND dimension=%s ORDER BY frequency DESC"
+        sql = f"SELECT {','.join(NGram.__annotations__.keys())} FROM ngram WHERE q=%s AND dimension=%s ORDER BY frequency DESC LIMIT 30"
         cls.db.cur.execute(sql, (hashtag, dimension, ))
         return [NGram(*row) for row in cls.db.cur.fetchall()]
 
@@ -31,7 +31,7 @@ class ORM:
         cls.db.cur.execute(sql, (bubble.hashtags, bubble.title, bubble.is_ready, bubble.id, ))
 
     @classmethod
-    def get_bubble_by_id(cls, id: int):
+    def get_bubble_by_id(cls, id: int) -> Bubble:
         sql = f"SELECT {','.join(Bubble.__annotations__.keys())} FROM bubble WHERE id=%s"
         cls.db.cur.execute(sql, (id, ))
         return Bubble(*cls.db.cur.fetchone())
@@ -40,3 +40,9 @@ class ORM:
     def create_jobs_for_bubble(cls, bubble: Bubble):
         sql = "INSERT INTO job (q, type, execution_intervall) VALUES (%s, %s, %s);"
         cls.db.cur.execute(sql, (",".join(bubble.hashtags), "bubble", 15))
+
+    @classmethod
+    def get_working_bubbles(cls):
+        sql = f"SELECT {','.join(Bubble.__annotations__.keys())} FROM bubble WHERE is_ready"
+        cls.db.cur.execute(sql)
+        return [Bubble(*entity) for entity in cls.db.cur.fetchall()]
