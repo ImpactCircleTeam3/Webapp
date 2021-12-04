@@ -7,17 +7,17 @@ class _Neo4JHandler:
     @classmethod
     def get_hashtags_by_count(cls, tx: Transaction, threshold: int = 0) -> List[HashtagRelationCounts]:
         query = """
-            MATCH (h:Hashtag)-[:IS_IN]->(t:Tweet)
-            WITH  h, count((h)-[:IS_IN]->(:Tweet)) as relationship_counts
-            ORDER BY relationship_counts DESC
-            WHERE relationship_counts > $threshold
-            RETURN h.hashtag, relationship_counts
+            MATCH (h:Hashtag)-->()
+            WITH h, COUNT(h) AS r_count
+            WHERE r_count > $threshold
+            RETURN h.hashtag, r_count
+            ORDER BY r_count DESC
         """
         result = tx.run(query, threshold=threshold)
         return [
             HashtagRelationCounts(
                 hashtag=row["h.hashtag"],
-                relationship_count=row["relationship_counts"]
+                relationship_count=row["r_count"]
             )
             for row in result
         ]
