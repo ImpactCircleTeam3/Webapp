@@ -25,11 +25,11 @@ class _Neo4JHandler:
     @classmethod
     def get_similar_hashtags(cls, tx: Transaction, hashtag: str) -> List[SimilarHashtag]:
         query = """
-            MATCH (h:Hashtag)-[:IS_IN]->(t:Tweet)<-[:IS_IN]-(h0:Hashtag)
-            WITH  h, h0, count((h)-[:IS_IN]->(:Tweet)) as match_count
-            ORDER BY match_count DESC
+            MATCH (h:Hashtag)-->()<--(h0:Hashtag)
+            WITH  h, h0, count(h) as match_count
             WHERE h0.hashtag=$hashtag
             RETURN h.hashtag, match_count
+            ORDER BY match_count DESC
         """
         result = tx.run(query, hashtag=hashtag)
         return [
