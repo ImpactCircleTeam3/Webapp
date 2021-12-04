@@ -35,3 +35,8 @@ class ORM:
         sql = f"SELECT {','.join(Bubble.__annotations__.keys())} FROM bubble WHERE id=%s"
         cls.db.cur.execute(sql, (id, ))
         return Bubble(*cls.db.cur.fetchone())
+
+    @classmethod
+    def create_jobs_for_bubble(cls, bubble: Bubble):
+        sql = "INSERT INTO job (q, type, execution_intervall) VALUES (%s, %s, %s);"
+        cls.db.cur.execute(sql, (",".join(bubble.hashtags), "bubble", 15))

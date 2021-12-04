@@ -26,5 +26,6 @@ def start_bubble():
     bubble = ORM.get_bubble_by_id(request.form['id'])
     bubble.is_ready = True
     ORM.update_working_bubble(bubble=bubble)
+    ORM.create_jobs_for_bubble(bubble=bubble)
     bubble = ORM.get_or_create_working_bubble()
     return jsonify(bubble.__dict__)
