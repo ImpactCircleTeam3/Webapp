@@ -88,3 +88,9 @@ class _Neo4JHandler:
             return list(result)[0]['hashtag_count']
         except KeyError:
             return 0
+
+    @classmethod
+    def get_relevant_hashtags(cls, tx: Transaction, hashtag: str) -> int:
+        query = """
+        
+        """

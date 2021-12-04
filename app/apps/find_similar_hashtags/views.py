@@ -1,19 +1,7 @@
 from flask import render_template
 from config.neo4j import Neo4J
-from config.postgres import Postgres
-
-from .domain_types import NGram
 from .neo4j import _Neo4JHandler
-
-
-class ORM:
-    db: Postgres = Postgres.get_instance().Postgres
-
-    @classmethod
-    def get_ngrams(cls, hashtag: str, dimension: int):
-        sql = f"SELECT {','.join(NGram.__annotations__.keys())} FROM ngram WHERE q=%s AND dimension=%s ORDER BY frequency DESC"
-        cls.db.cur.execute(sql, (hashtag, dimension, ))
-        return [NGram(*row) for row in cls.db.cur.fetchall()]
+from .orm import ORM
 
 
 def get_hashtag_relation_counts():

@@ -22,3 +22,11 @@ class NGram:
     frequency: int
     q: str
     type: str
+
+
+@dataclass
+class Bubble:
+    id: int
+    title: str
+    hashtags: List[str]
+    is_ready: bool

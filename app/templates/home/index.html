@@ -9,13 +9,36 @@
       <hr>
     </div>
     <div class="column">
-
+      <div id="my_dataviz"></div>
     </div>
   </div>
 </section>
 
+{#
+<section class="section is-medium">
+  <div class="columns">
+    <div class="column">
+      <div class="notification is-primary">
+        Collect Data
+      </div>
+    </div>
+    <div class="column">
+      <div class="notification is-primary">
+        Organize Data
+      </div>
+    </div>
+    <div class="column">
+      <div class="notification is-primary">
+        Understand Data
+      </div>
+    </div>
+  </div>
+</section>
+#}
+
 {% endblock %}
 
 {% block javascript %}
-<script>{% include 'home/hashtagRelationshipGraph.js' %}</script>
+{# <script>{% include 'home/hashtagRelationshipGraph.js' %}</script> #}
+<script>{% include 'find_similar_hashtags/bubble.js' %}</script>
 {% endblock %}

@@ -1,21 +1,36 @@
 {% extends "wrapper/base.html" %}
 {% block content %}
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Hashtag</th>
-      <th>Count</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for hashtag in hashtag_relation_counts %}
-    <tr>
-      <td><a href="/hashtag-finder/{{hashtag.hashtag}}">{{hashtag.hashtag}}</a></td>
-      <td>{{hashtag.relationship_count}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="columns">
+  <div class="column">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Hashtag</th>
+          <th>Count</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for hashtag in hashtag_relation_counts %}
+        <tr>
+          <td><a href="/hashtag-finder/{{hashtag.hashtag}}">{{hashtag.hashtag}}</a></td>
+          <td>{{hashtag.relationship_count}}</td>
+          <td style="cursor: pointer" name="hashtag-row" data-value="{{hashtag.hashtag}}">
+            <i class="fas fa-project-diagram"></i>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="column">
+    {% include 'find_similar_hashtags/bubble.html' %}
+  </div>
+</div>
 
+{% endblock %}
+
+{% block javascript %}
+<script>{% include 'find_similar_hashtags/bubble.js' %}</script>
 {% endblock %}
